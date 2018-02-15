@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -14,6 +15,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
+    private TextView mAlsoKnownAs;
+    private TextView mIngredients;
+    private TextView mPlaceOfOrigin;
+    private TextView mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,10 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ImageView ingredientsIv = findViewById(R.id.image_iv);
+        mAlsoKnownAs = findViewById(R.id.activity_detail_also_known_as_value);
+        mIngredients = findViewById(R.id.activity_detail_ingredients_value);
+        mPlaceOfOrigin = findViewById(R.id.activity_detail_place_of_origin_value);
+        mDescription = findViewById(R.id.activity_detail_description_value);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -43,7 +52,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +65,25 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private static final String COMA = ",";
 
+    private void populateUI(Sandwich sandwich) {
+        StringBuilder alsoKnownAs = new StringBuilder();
+        for (String subName : sandwich.getAlsoKnownAs()) {
+            alsoKnownAs.append(subName);
+            alsoKnownAs.append(COMA);
+        }
+        alsoKnownAs.deleteCharAt(alsoKnownAs.length() - 1);
+        mAlsoKnownAs.setText(alsoKnownAs);
+
+        StringBuilder ingredients = new StringBuilder();
+        for (String ingredient : sandwich.getIngredients()) {
+            ingredients.append(ingredient);
+            ingredients.append(COMA);
+        }
+        ingredients.deleteCharAt(ingredients.length() - 1);
+        mIngredients.setText(ingredients);
+        mPlaceOfOrigin.setText(sandwich.getPlaceOfOrigin());
+        mDescription.setText(sandwich.getDescription());
     }
 }
