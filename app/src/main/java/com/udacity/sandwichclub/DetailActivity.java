@@ -11,6 +11,8 @@ import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
+import java.util.List;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
@@ -68,22 +70,21 @@ public class DetailActivity extends AppCompatActivity {
     private static final String COMA = ",";
 
     private void populateUI(Sandwich sandwich) {
-        StringBuilder alsoKnownAs = new StringBuilder();
-        for (String subName : sandwich.getAlsoKnownAs()) {
-            alsoKnownAs.append(subName);
-            alsoKnownAs.append(COMA);
-        }
-        alsoKnownAs.deleteCharAt(alsoKnownAs.length() - 1);
-        mAlsoKnownAs.setText(alsoKnownAs);
-
-        StringBuilder ingredients = new StringBuilder();
-        for (String ingredient : sandwich.getIngredients()) {
-            ingredients.append(ingredient);
-            ingredients.append(COMA);
-        }
-        ingredients.deleteCharAt(ingredients.length() - 1);
-        mIngredients.setText(ingredients);
+        mAlsoKnownAs.setText(generateStringFromList(sandwich.getAlsoKnownAs()));
+        mIngredients.setText(generateStringFromList(sandwich.getIngredients()));
         mPlaceOfOrigin.setText(sandwich.getPlaceOfOrigin());
         mDescription.setText(sandwich.getDescription());
+    }
+
+    private String generateStringFromList(List<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item : list) {
+            stringBuilder.append(item);
+            stringBuilder.append(COMA);
+        }
+        if (stringBuilder.length() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
+        return stringBuilder.toString();
     }
 }

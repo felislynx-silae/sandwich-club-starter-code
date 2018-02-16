@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils {
+    /**
+     * It is just to not create strings for every json parsed.
+     * For bigger projects i'm using Jackson :)
+    **/
     private static final String KEY_NAME = "name";
     private static final String KEY_MAIN_NAME = "mainName";
     private static final String KEY_ALSO_KNOWN_AS = "alsoKnownAs";
